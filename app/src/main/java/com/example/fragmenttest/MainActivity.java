@@ -21,6 +21,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     FragTwo frag2;
     FragThree frag3;
 
+    public static String[] lastSet = new String[9];
+    public static String[] searchSet = new String[9];
+    public static String store = new String();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        TestClass testclass = new TestClass();
+        lastSet = testclass.parsing("");
     }
 
     @Override

@@ -12,12 +12,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragTwo extends Fragment {
+public class FragTwo extends Fragment implements View.OnClickListener {
+    TextView frag2_tv1 ,frag2_tv2;              //private 설정시 에러발생
+    Button frag2_btsearch, frag2_btlast;
+    EditText frag2_et1;
+    public static String str = new String();
+    public String[] search = new String[9];
 
     public FragTwo() {
         // Required empty public constructor
@@ -29,7 +37,42 @@ public class FragTwo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.v("Fragment3","onCreateView 프래그먼트와 관련되는 뷰계층 만들어서 리턴");
-        return inflater.inflate(R.layout.fragment_frag_two, container, false);
+        View view = inflater.inflate(R.layout.fragment_frag_two, container, false);
+
+        frag2_tv1 = view.findViewById(R.id.frag2_tv1);
+        frag2_tv2 = view.findViewById(R.id.frag2_tv2);
+
+        frag2_et1 = view.findViewById(R.id.frag2_et1);
+
+        frag2_btsearch = view.findViewById(R.id.frag2_btsearch);
+        frag2_btsearch.setOnClickListener(this);
+        frag2_btlast = view.findViewById(R.id.frag2_btlast);
+        frag2_btlast.setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.frag2_btsearch:
+                String num = frag2_et1.getText().toString();
+                frag2_et1.setText("");
+
+                TestClass testclass = new TestClass();
+                search = testclass.parsing(num);
+                frag2_tv2.setText("");
+                for(int i=0; i<search.length; i++){
+                    frag2_tv2.append(search[i]+" ");
+                }
+                break;
+            case R.id.frag2_btlast:
+                frag2_tv2.setText("");
+                for(int i=0; i<MainActivity.lastSet.length; i++){
+                    frag2_tv2.append(MainActivity.lastSet[i]+" ");
+                }
+                break;
+        }
     }
 
     @Override
@@ -48,6 +91,9 @@ public class FragTwo extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.v("Fragment2","onActivityCreated 연결된 액티비티 onCreate() 완료 후 호출");
+        for(int i=0; i<MainActivity.lastSet.length; i++){
+            frag2_tv1.append(MainActivity.lastSet[i]+" ");
+        }
     }
 
     @Override

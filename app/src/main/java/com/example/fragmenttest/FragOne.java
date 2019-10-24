@@ -2,6 +2,7 @@ package com.example.fragmenttest;
 
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,34 +13,79 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragOne extends Fragment {
+public class FragOne extends Fragment implements View.OnClickListener {
+    Button bt_random;
+    TextView tv_result;
+    ImageView[] iv_num = new ImageView[7];
+
+    private int[] numbers = new int[7];
+    private int num = 0;
 
     public FragOne() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_one, container, false);
+        View view = inflater.inflate(R.layout.fragment_frag_one, container, false);
+
+        iv_num[0] = (ImageView)view.findViewById(R.id.iv_num1);
+        iv_num[1] = (ImageView)view.findViewById(R.id.iv_num2);
+        iv_num[2] = (ImageView)view.findViewById(R.id.iv_num3);
+        iv_num[3] = (ImageView)view.findViewById(R.id.iv_num4);
+        iv_num[4] = (ImageView)view.findViewById(R.id.iv_num5);
+        iv_num[5] = (ImageView)view.findViewById(R.id.iv_num6);
+        iv_num[6] = (ImageView)view.findViewById(R.id.iv_num7);
+
+        tv_result = view.findViewById(R.id.tv_result);
+        bt_random = view.findViewById(R.id.bt_random);
+        bt_random.setOnClickListener(this);
+        return view;
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.bt_random:
+                start();                        // 랜덤번호 뽑기 메소드 실행
+               break;
+        }
+    }
+    public void start(){
+        tv_result.setText("");                 // TextView 초기화
+        for(int i=0; i<7; i++){
+            random();
+            if(num==6)
+                tv_result.append(numbers[num]+"");
+            else
+                tv_result.append(numbers[num]+" + ");
+            num++;
+        }
+        num = 0;
+    }
 
-
-
+    public void random(){
+        numbers[num] = (int)(Math.random()*45)+1;
+        for(int j=0; j<num; j++){
+            if(numbers[num]== numbers[j])
+                random();
+        }
+    }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Log.v("Fragment1","onAttach 프래그먼트가 액티비티와 연결시 호출");
-
         //((MainActivity)context).pushOnBackKeyPressedListener(this);
     }
 

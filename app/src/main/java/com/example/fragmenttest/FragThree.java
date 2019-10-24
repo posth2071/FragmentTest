@@ -29,7 +29,9 @@ public class FragThree extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.v("Fragment2","onCreateView 프래그먼트와 관련되는 뷰계층 만들어서 리턴");
-        return inflater.inflate(R.layout.fragment_frag_three, container, false);
+        View view = inflater.inflate(R.layout.fragment_frag_three, container, false);
+
+        return view;
     }
 
 
