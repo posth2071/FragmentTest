@@ -1,56 +1,59 @@
 package com.example.fragmenttest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     FragOne frag1;
     FragTwo frag2;
     FragThree frag3;
-    Button bt1, bt2, bt3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bt1 = (Button)findViewById(R.id.bt1);
-        bt1.setOnClickListener(this);
-
-        bt2 = (Button)findViewById(R.id.bt2);
-        bt2.setOnClickListener(this);
-
-        bt3 = (Button)findViewById(R.id.bt3);
-        bt3.setOnClickListener(this);
 
         frag1 = new FragOne();
-        //frag1 = (FragOne)getSupportFragmentManager().findFragmentById(R.id.fragment);
         frag2 = new FragTwo();
         frag3 = new FragThree();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, frag1).commit();      //프래그먼트1 표시
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.bt1:
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // 어떤 메뉴 아이템이 터치되었는지 확인합니다.
+        switch (menuItem.getItemId()) {
+            case R.id.menuitem_bottombar_up:
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, frag1) // 표시할 레이아웃, 변경할 프래그먼트 설정
                         .addToBackStack(null)          // 백스택에 변겅전 프래그먼트 저장
                         .commit();                     // 트랜잭션 실행
-                break;
-            case R.id.bt2:
+                return true;
+            case R.id.menuitem_bottombar_down:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, frag2).addToBackStack(null).commit();
-                break;
-            case R.id.bt3:
+                return true;
+
+            case R.id.menuitem_bottombar_search:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, frag3).addToBackStack(null).commit();
-                break;
+                return true;
         }
+        return false;
     }
 }
